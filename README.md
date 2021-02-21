@@ -10,7 +10,7 @@
 
 ## Practice
 
-- Practice blocks: implement a generateHash function using crypto-js/SHA256 library
+- Hashing & Practice blocks: implement a generateHash function using crypto-js/SHA256 library
 
 
 ## Projects
