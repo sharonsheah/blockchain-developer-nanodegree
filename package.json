@@ -1,1 +1,19 @@
-{}
+{
+  "name": "blockchain-nanodegree",
+  "version": "1.0.0",
+  "description": "## Core curriculum - Welcome to the Blockchain Revolution - Blockchain Fundamentals - Ethereum Smart Contracts, Tokens and Dapps - Blockchain Architecture - Dapp with autonomous smart contracts and oracles - Capstone",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sharonsheah/blockchain-developer-nanodegree.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sharonsheah/blockchain-developer-nanodegree/issues"
+  },
+  "homepage": "https://github.com/sharonsheah/blockchain-developer-nanodegree#readme"
+}
