@@ -74,9 +74,6 @@ class Block {
 			// Resolve with the data if the object isn't the Genesis block
 			if (self.height === 0) {
 				reject(Error("Rejected as this is a Genesis block"));
-			} 
-			else {
-				resolve(decodedData);
 			}
 		});
 	}
