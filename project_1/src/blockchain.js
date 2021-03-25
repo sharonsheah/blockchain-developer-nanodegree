@@ -70,7 +70,6 @@ class Blockchain {
 		return new Promise(async (resolve, reject) => {
 			const currentHeight = self.getChainHeight();
 
-
 			if (currentHeight > 0) {
 				const prevBlock = self.getBlockByHeight(currentHeight);
 				newBlock.previousBlockHash = prevBlock.hash;
@@ -82,14 +81,14 @@ class Blockchain {
 			newBlock.time = new Date().getTime().toString().slice(0,-3)
 			newBlock.hash = SHA256(JSON.stringify(newBlock)).toString()
 
+			self.chain.push(newBlock)
+			self.validateChain();
+
 			if (newBlock) {
 				resolve(newBlock);
 			} else {
 				reject(Error("Error occured when adding block to chain"));
 			}
-		
-			self.chain.push(newBlock)
-			self.validateChain();
 		});
 	}
 
@@ -194,13 +193,11 @@ class Blockchain {
 		return new Promise(async (resolve, reject) => {
 			self.chain.forEach((block) => {
 				let data = block.getBData();
-				if (data.owner === address) stars.push(data);
+				if (data){
+					if (data.owner === address) stars.push(data);
+				}
 			});
-			if (stars) {
-				resolve(stars);
-			} else {
-				reject(null);
-			}
+			resolve(stars);
 		});
 	}
 
@@ -214,7 +211,11 @@ class Blockchain {
 		let self = this;
 		let errorLog = [];
 		return new Promise(async (resolve, reject) => {
-			validateBlock(self.chain)
+
+			
+			if (validateBlock(self.chain)) {
+				resolve(errorLog);
+			} 
 		});
 	}
 
@@ -222,15 +223,15 @@ class Blockchain {
 		const currentHeight = this.getChainHeight();
 		chain.forEach((a, b) => {
 			if (currentHeight > 0) {
-				if (a.previousBlockHash === b.hash) {
+				if (a.hash === b.previousBlockHash) {
 					return true;
 				} else {
+					errorLog.push(`${a} and ${b} is valid`)
 					return false;
-				}
-			}
-		});
+				};
+			};
+		})
 	}
-
 }
 
 module.exports.Blockchain = Blockchain;   
