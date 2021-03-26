@@ -41,9 +41,11 @@ class Block {
 			// Save in auxiliary variable the current block hash
 			let currentBlockHash = self.hash;
 			// Recalculate the hash of the Block
-			let recalculatedBlockHash = SHA256(JSON.stringify(self)).toString();
+			self.hash = null;
+			self.hash = SHA256(JSON.stringify(self)).toString();
+			self.hash = currentBlockHash
 			// Comparing if the hashes changed
-			if (currentBlockHash != recalculatedBlockHash) {
+			if (self.hash !== currentBlockHash) {
 				// Returning the Block is not valid
 				reject(false);
 			}
@@ -75,7 +77,7 @@ class Block {
 		if (decodedData && self.height > 0) {
 			return decodedData;
 		} else {
-			console.log(new Error("Rejected as this is a Genesis block"));
+			return Error("Rejected as this is a Genesis block");
 		}
 	}
 }
