@@ -199,3 +199,10 @@ You should see in your terminal a message indicating that the server is listenin
      ![Request: http://localhost:8000/submitstar](https://s3.amazonaws.com/video.udacity-data.com/topher/2019/April/5ca365d3_signing-message/signing-message.png)
 6. Retrieve Stars owned by me
     ![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](https://s3.amazonaws.com/video.udacity-data.com/topher/2019/April/5ca362b9_retrieve-stars/retrieve-stars.png)
+
+## Screenshots
+![:block:height:0](https://user-images.githubusercontent.com/37326128/112661056-3766ca80-8eaa-11eb-996d-6022fd44ce44.png)
+![sign_message_with_address](https://user-images.githubusercontent.com/37326128/112661031-3170e980-8eaa-11eb-98e8-9e25e4db17d6.png)
+![:submitStar](https://user-images.githubusercontent.com/37326128/112661049-36359d80-8eaa-11eb-9b5b-7a277e87e8f4.png)
+![:requestValidation](https://user-images.githubusercontent.com/37326128/112661052-36ce3400-8eaa-11eb-80ee-9096323bddb4.png)
+![:blocks:address](https://user-images.githubusercontent.com/37326128/112661046-35047080-8eaa-11eb-8b7b-b84eeceea672.png)
