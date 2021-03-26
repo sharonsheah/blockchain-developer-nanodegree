@@ -61,36 +61,28 @@ class Blockchain {
 	 * Note: the symbol `_` in the method name indicates in the javascript convention 
 	 * that this method is a private method. 
 	 */
-	 getLatestBlock(){
-    return this.chain[this.chain.length -1];
-  }
 
 	_addBlock(newBlock) {
 		let self = this;
 		return new Promise(async (resolve, reject) => {
-			const currentHeight = await self.getChainHeight();
+			let currentHeight = await self.getChainHeight();
 
-			if (currentHeight > 0) {
-				const prevBlock = self.getLatestBlock();
-				newBlock.previousBlockHash = prevBlock.hash;
-			} else {
-				newBlock.previousBlockHash = null;
-			}
-
-			newBlock.height = self.height + 1;
 			newBlock.time = new Date().getTime().toString().slice(0,-3);
-			newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
+			newBlock.height = currentHeight + 1;
 
-			self.chain.push(newBlock);
-			self.validateChain();
-
-			if (newBlock) {
-				resolve(newBlock);
-			} else {
-				reject(Error("Error occured when adding block to chain"));
+			if (currentHeight >= 0) {
+				let prevBlock = self.chain[self.height];
+				newBlock.previousBlockHash = prevBlock.hash;
 			}
+
+			newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
+			self.chain.push(newBlock);
+			self.height = self.chain.length - 1;
+			self.validateChain();
+			resolve(newBlock);
 		});
 	}
+
 
 	/**
 	 * The requestMessageOwnershipVerification(address) method
