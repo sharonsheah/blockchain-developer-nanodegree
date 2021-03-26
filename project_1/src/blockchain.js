@@ -202,25 +202,14 @@ class Blockchain {
 		let self = this;
 		let errorLog = [];
 		return new Promise(async (resolve) => {
-			if (self.validateBlock(self.chain)) {
-				resolve(errorLog);
-			} 
+			self.chain.forEach((block) => {
+				if (!block.validateBlock()) {
+					errorLog.push({ error: 'Block not valid' });
+				} 
+			})
+			resolve(errorLog);
 		});
-	}
-
-	validateBlock(chain) {
-		const currentHeight = this.getChainHeight();
-		chain.forEach((a, b) => {
-			if (currentHeight > 0) {
-				if (a.hash === b.previousBlockHash) {
-					return true;
-				} else {
-					errorLog.push(`${a} and ${b} is valid`)
-					reject("The block cannot be added, the chain has been tampered.")
-				};
-			};
-		})
 	}
 }
 
-module.exports.Blockchain = Blockchain;   
+module.exports.Blockchain = Blockchain;
