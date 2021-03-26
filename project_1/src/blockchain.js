@@ -73,12 +73,12 @@ class Blockchain {
 			if (currentHeight >= 0) {
 				let prevBlock = self.chain[self.height];
 				newBlock.previousBlockHash = prevBlock.hash;
+				self.validateChain();
 			}
 
 			newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
 			self.chain.push(newBlock);
 			self.height = self.chain.length - 1;
-			self.validateChain();
 			resolve(newBlock);
 		});
 	}
@@ -203,10 +203,11 @@ class Blockchain {
 		let errorLog = [];
 		return new Promise(async (resolve) => {
 			self.chain.forEach((block) => {
-				if (!block.validateBlock()) {
-					errorLog.push({ error: 'Block not valid' });
-				} 
-			})
+				let validateBlock = block.validate()
+				if (!validateBlock) {
+					errorLog.push({ error: 'Block invalid' });
+				}
+			});
 			resolve(errorLog);
 		});
 	}
