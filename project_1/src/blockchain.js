@@ -44,7 +44,7 @@ class Blockchain {
 	 * Utility method that return a Promise that will resolve with the height of the chain
 	 */
 	getChainHeight() {
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			resolve(this.height);
 		});
 	}
@@ -66,22 +66,22 @@ class Blockchain {
   }
 
 	_addBlock(newBlock) {
-		let self = this
+		let self = this;
 		return new Promise(async (resolve, reject) => {
-			const currentHeight = self.getChainHeight();
+			const currentHeight = await self.getChainHeight();
 
 			if (currentHeight > 0) {
-				const prevBlock = self.getBlockByHeight(currentHeight);
+				const prevBlock = self.getLatestBlock();
 				newBlock.previousBlockHash = prevBlock.hash;
 			} else {
-				newBlock.previousBlockHash = ''
+				newBlock.previousBlockHash = null;
 			}
 
-			newBlock.height = currentHeight + 1;
-			newBlock.time = new Date().getTime().toString().slice(0,-3)
-			newBlock.hash = SHA256(JSON.stringify(newBlock)).toString()
+			newBlock.height = self.height + 1;
+			newBlock.time = new Date().getTime().toString().slice(0,-3);
+			newBlock.hash = SHA256(JSON.stringify(newBlock)).toString();
 
-			self.chain.push(newBlock)
+			self.chain.push(newBlock);
 			self.validateChain();
 
 			if (newBlock) {
@@ -102,9 +102,7 @@ class Blockchain {
 	 */
 	requestMessageOwnershipVerification(address) {
 		return new Promise((resolve) => {
-			let message = `<${address}>:${new Date().getTime().toString().slice(0,-3)}:starRegistry`;
-
-			resolve(message);
+			resolve(`${address}:${new Date().getTime().toString().slice(0,-3)}:starRegistry`);
 		});
 	}
 
@@ -129,20 +127,21 @@ class Blockchain {
 		let self = this;
 		return new Promise(async (resolve, reject) => {
 			const time = parseInt(message.split(':')[1]);
-			let currentTime = parseInt(new Date().getTime().toString().slice(0, -3));
+			const currentTime = parseInt(new Date().getTime().toString().slice(0, -3));
 
-			if ((currentTime - time) < 300000) {
-				bitcoinMessage.verify(message, address, signature);
+			if ((currentTime - time) < 300) {
+				if (!bitcoinMessage.verify(message, address, signature)) {
+					return reject(Error('Bitcoin message unverified.'));
+				}
+
+				const data = { owner: address, star: star }
+				
+				const blockWithStar = new BlockClass.Block(data);
+	
+				resolve(await self._addBlock(blockWithStar));
 			}
-			
-			let blockWithStar = new BlockClass.Block(star);
 
-			if (await self._addBlock(blockwithStar)) {
-				resolve(blockWithStar);
-			} else {
-				reject();
-			}
-
+			return reject(Error('Block must be added in less than 5 minutes.'));
 		});
 	}
 
@@ -155,7 +154,7 @@ class Blockchain {
 	getBlockByHash(hash) {
 		let self = this;
 		return new Promise((resolve, reject) => {
-			let block = self.chain.filter(block => block.hash === hash)
+			let block = self.chain.filter(block => block.hash === hash);
 			if (block) {
 				resolve(block);
 			} else {
@@ -171,7 +170,7 @@ class Blockchain {
 	 */
 	getBlockByHeight(height) {
 		let self = this;
-		return new Promise(async (resolve, reject) => {
+		return new Promise(async (resolve) => {
 			let block = self.chain.filter(p => p.height === height)[0];
 			if(block){
 				resolve(block);
@@ -187,13 +186,13 @@ class Blockchain {
 	 * Remember the star should be returned decoded.
 	 * @param {*} address 
 	 */
-	getStarsByWalletAddress (address) {
+	getStarsByWalletAddress(address) {
 		let self = this;
 		let stars = [];
-		return new Promise(async (resolve, reject) => {
+		return new Promise(async (resolve) => {
 			self.chain.forEach((block) => {
 				let data = block.getBData();
-				if (data){
+				if (data) {
 					if (data.owner === address) stars.push(data);
 				}
 			});
@@ -210,7 +209,7 @@ class Blockchain {
 	validateChain() {
 		let self = this;
 		let errorLog = [];
-		return new Promise(async (resolve, reject) => {
+		return new Promise(async (resolve) => {
 			if (self.validateBlock(self.chain)) {
 				resolve(errorLog);
 			} 
@@ -225,7 +224,7 @@ class Blockchain {
 					return true;
 				} else {
 					errorLog.push(`${a} and ${b} is valid`)
-					return false;
+					reject("The block cannot be added, the chain has been tampered.")
 				};
 			};
 		})
