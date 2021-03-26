@@ -200,9 +200,21 @@ You should see in your terminal a message indicating that the server is listenin
 6. Retrieve Stars owned by me
     ![Request: http://localhost:8000/blocks/<WALLET_ADDRESS>](https://s3.amazonaws.com/video.udacity-data.com/topher/2019/April/5ca362b9_retrieve-stars/retrieve-stars.png)
 
-## Screenshots
-![:block:height:0](https://user-images.githubusercontent.com/37326128/112661056-3766ca80-8eaa-11eb-996d-6022fd44ce44.png)
-![sign_message_with_address](https://user-images.githubusercontent.com/37326128/112661031-3170e980-8eaa-11eb-98e8-9e25e4db17d6.png)
-![:submitStar](https://user-images.githubusercontent.com/37326128/112661049-36359d80-8eaa-11eb-9b5b-7a277e87e8f4.png)
-![:requestValidation](https://user-images.githubusercontent.com/37326128/112661052-36ce3400-8eaa-11eb-80ee-9096323bddb4.png)
-![:blocks:address](https://user-images.githubusercontent.com/37326128/112661046-35047080-8eaa-11eb-8b7b-b84eeceea672.png)
+## Screenshots application testing
+### 1. GET request for Genesis Block
+![genesisBlock](https://user-images.githubusercontent.com/37326128/112700330-06a28780-8ee2-11eb-9e5b-a4b7cb06f7d2.png)
+
+### 2. POST request validation
+![requestValidation](https://user-images.githubusercontent.com/37326128/112700335-0acea500-8ee2-11eb-849d-368c6b408e14.png)
+
+### 3. Sign message with Electrum wallet
+![signMessageWithWallet](https://user-images.githubusercontent.com/37326128/112700348-102bef80-8ee2-11eb-897c-525451f0782a.png)
+
+### 4. POST submit star
+![submitStar](https://user-images.githubusercontent.com/37326128/112700362-1752fd80-8ee2-11eb-9c10-d344b3417b4b.png)
+
+### 5. GET retrieve stars owned by me
+![retrieveStarsOwnedByMe](https://user-images.githubusercontent.com/37326128/112700370-1b7f1b00-8ee2-11eb-8339-46873230814e.png)
+
+### 6. GET validate chain
+![validateChain](https://user-images.githubusercontent.com/37326128/112700379-2043cf00-8ee2-11eb-9ef5-177d51457c2d.png)
