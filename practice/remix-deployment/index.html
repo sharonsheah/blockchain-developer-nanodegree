@@ -28,15 +28,30 @@
 
 			web3.eth.defaultAccount = web3.eth.accounts[0];
 
-      var RemixContract = web3.eth.Contract(abi);
+			var abi = [
+				{
+					constant: false,
+					inputs: [{ name: "x", type: "string" }],
+					name: "setMessage",
+					outputs: [],
+					payable: false,
+					stateMutability: "nonpayable",
+					type: "function",
+				},
+				{
+					constant: true,
+					inputs: [],
+					name: "getMessage",
+					outputs: [{ name: "", type: "string" }],
+					payable: false,
+					stateMutability: "view",
+					type: "function",
+				},
+			];
 
-      var myMessage = RemixContract.at('0x74b50293FFd2B77BcE6C8D57E98Efe6Ac392B311');
+			var contract_address = "0x74b50293FFd2B77BcE6C8D57E98Efe6Ac392B311";
 
-			// var myMessage = new web3.eth.Contract(abi, contract_address);
-
-			var abi = [{"constant":false,"inputs":[{"name":"x","type":"string"}],"name":"setMessage","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"getMessage","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"}];
-
-			// var contract_address = "0x74b50293FFd2B77BcE6C8D57E98Efe6Ac392B311";
+			var myMessage = new web3.eth.Contract(abi, contract_address);
 
 			console.log(myMessage);
 		</script>
